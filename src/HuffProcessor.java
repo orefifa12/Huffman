@@ -64,13 +64,14 @@ public class HuffProcessor {
 	 */
 	public void compress(BitInputStream in, BitOutputStream out){
 
+		int[] counts = getCounts (in);
+	  	HuffNode root = makeTree (counts) ;
+	  	in.reset ();
+	  	out.writeBits (BITS_PER_INT ,HUFF_TREE);
+	  	writeTree(root,out);
+	  	String[] encodings = new String[ALPH_SIZE+1];
+	  	makeEncodings (root, ""‚ encodings);
 
-		// remove all this code when implementing compress
-		while (true){
-			int val = in.readBits(BITS_PER_WORD);
-			if (val == -1) break;
-			out.writeBits(BITS_PER_WORD, val);
-		}
 		out.close();
 	}
 
@@ -144,12 +145,5 @@ public class HuffProcessor {
         }
   	}
 
-	  int[] counts = getCounts (in);
-	  HuffNode root = makeTree (counts) ;
-	  in.reset ();
-	  out.writeBits (BITS_PER_INT ,HUFF_TREE);
-	  writeTree(root,out);
-	  String[] encodings = new String[ALPH_SIZE+1];
-	  makeEncodings (root,"" ‚encodings);
 
 }
