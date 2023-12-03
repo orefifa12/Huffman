@@ -71,7 +71,16 @@ public class HuffProcessor {
 	  	writeTree(root,out);
 	  	String[] encodings = new String[ALPH_SIZE+1];
 	  	makeEncodings(root, "", encodings);
-
+		while(true)
+		{
+			int bits = in.readBits(BITS_PER_WORD);
+			if(bits == -1)
+				break;
+			String code = encodings[bits];
+    		out.writeBits(code.length(), Integer.parseInt(code,2));
+		}
+		String code = encodings[PSEUDO_EOF];
+		out.writeBits(code.length(), Integer.parseInt(code,2));	
 		out.close();
 	}
 
