@@ -100,6 +100,7 @@ public class HuffProcessor {
 		while (pq.size() > 1) {
 		HuffNode left = pq.remove();
 		HuffNode right = pq.remove();
+		HuffNode t = new HuffNode(0, pq.size(), left, right);
 		// create new HuffNode t with weight from
 		// left.weight+right.weight and left, right subtrees
 		pq.add(t);
