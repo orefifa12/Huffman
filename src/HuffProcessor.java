@@ -71,12 +71,13 @@ public class HuffProcessor {
 	  	writeTree(root,out);//make the new tree
 	  	String[] encodings = new String[ALPH_SIZE+1]; // Encodings for each car
 	  	makeEncodings(root, "", encodings); // make the encoding for each 8bit char
-		in.reset(); //reset
+
 		while(true){
-			int bits = in.readBits(BITS_PER_INT);//reads the bit for the next word
+			int bits = in.readBits(BITS_PER_WORD);//reads the bit for the next word
 			if(bits == -1) // There are no more bits to read
 				break;
-			String code = encodings[bits];
+			char c = (char) bits;
+			String code = encodings[c];
     		out.writeBits(code.length(), Integer.parseInt(code,2));
 		}
 		String code = encodings[PSEUDO_EOF];
