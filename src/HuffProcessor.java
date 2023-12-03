@@ -124,6 +124,16 @@ public class HuffProcessor {
 		writeTree(root.right, out);
 	}
 
+	private void makeEncodings(HuffNode root, String path,String[] encodings){
+		if (checkLeaf(root)) {
+			encodings[root.value] = path;
+			return;
+		   }
+		else{
+			makeEncodings(root.left, path + "0", encodings);
+			makeEncodings(root.right, path + "1", encodings);
+		}
+	}
 	/**
 	 * Decompresses a file. Output file must be identical bit-by-bit to the
 	 * original.
