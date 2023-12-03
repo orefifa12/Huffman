@@ -10,6 +10,47 @@ public class HuffMainDecompress {
 		}
 		return name + UNHUFF_EXTENSION;
 	}
+
+	public void decompress(BitInputStream in, BitOutputStream out) {
+		int bits = in.readBits(BITS_PER_INT);
+		if (bits != HUFF_TREE) {
+			throw new HuffException("Invalid magic number: " + bits);
+		}
+		
+		HuffNode root = readTree(in);
+		HuffNode current = root;
+		
+		while (true) {
+			int bit = in.readBits(1); // Read one bit at a time
+	
+			// TODO: Traverse the Huffman tree using the 'bit' variable
+			// and update the 'current' node accordingly.
+			// Write leaf values to the output file.
+	
+			// TODO: Check for PSEUDO_EOF and break out of the loop if found.
+		}
+	
+		// Close the output file after decompression
+		out.close();
+	}
+	
+	// Helper method to read the Huffman tree
+	private HuffNode readTree(BitInputStream in) {
+        bit = in.readBits(1);
+        if (bit == -1) throw exception
+        if (bit == 0) {
+                left = readTree(...)
+                right = readTree(...)
+                 return new HuffNode(0,0,left,right);
+        }
+        else {
+            value = read BITS_PER_WORD+1 bits from input
+            return new HuffNode(value,0,null,null);
+        }
+  }
+
+	
+
 	public static void main(String[] args) {
 		
 		System.out.println("Huffman Decompress Main");
