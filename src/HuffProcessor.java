@@ -118,7 +118,7 @@ public class HuffProcessor {
 				}
 			}
 		}
-		out.close();
+		out.close(); //close output file
 	}
 
 	private boolean checkLeaf(HuffNode t)
