@@ -73,7 +73,7 @@ public class HuffProcessor {
 	  	makeEncodings(root, "", encodings); // make the encoding for each 8bit char
 		in.reset(); //reset
 		while(true){
-			int bits = in.readBits(BITS_PER_WORD);//reads the bit for the next word
+			int bits = in.readBits(BITS_PER_INT);//reads the bit for the next word
 			if(bits == -1) // There are no more bits to read
 				break;
 			String code = encodings[bits];
@@ -87,9 +87,8 @@ public class HuffProcessor {
 	private int[] getCounts(BitInputStream in)
 	{
 		int[] count = new int[ALPH_SIZE];
-		while(true)
-		{
-			int bits = in.readBits(BITS_PER_WORD);
+		int bits = in.readBits(BITS_PER_WORD);
+		while(true){
 			if(bits == -1)
 				break;
 			count[bits] += 1;
@@ -109,7 +108,7 @@ public class HuffProcessor {
 		while (pq.size() > 1) {
 		HuffNode left = pq.remove();
 		HuffNode right = pq.remove();
-		HuffNode t = new HuffNode(0, pq.size(), left, right);
+		HuffNode t = new HuffNode(0, left.weight+right.weight, left, right);
 		// create new HuffNode t with weight from
 		// left.weight+right.weight and left, right subtrees
 		pq.add(t);
@@ -134,6 +133,7 @@ public class HuffProcessor {
 	}
 
 	private void makeEncodings(HuffNode root, String path,String[] encodings){
+		if (root == null){return ;}
 		if (checkLeaf(root)) {
 			encodings[root.value] = path;
 			return;
