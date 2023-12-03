@@ -64,17 +64,16 @@ public class HuffProcessor {
 	 */
 	public void compress(BitInputStream in, BitOutputStream out){
 
-		int[] counts = getCounts(in);
-	  	HuffNode root = makeTree(counts) ;
-	  	in.reset();
-	  	out.writeBits(BITS_PER_INT ,HUFF_TREE);
-	  	writeTree(root,out);
-	  	String[] encodings = new String[ALPH_SIZE+1];
-	  	makeEncodings(root, "", encodings);
-		while(true)
-		{
-			int bits = in.readBits(BITS_PER_WORD);
-			if(bits == -1)
+		int[] counts = getCounts(in); // freq of every 8-bit
+	  	HuffNode root = makeTree(counts) ; //creates new encodings greedily
+	  	in.reset(); //reset to the beginning of the file
+	  	out.writeBits(BITS_PER_INT ,HUFF_TREE);//write magic num
+	  	writeTree(root,out);//make the new tree
+	  	String[] encodings = new String[ALPH_SIZE+1]; // Encodings for each car
+	  	makeEncodings(root, "", encodings); // make the encoding for each 8bit char
+		while(true){
+			int bits = in.readBits(BITS_PER_INT);//reads the bit for the next word
+			if(bits == -1) // There are no more bits to read
 				break;
 			String code = encodings[bits];
     		out.writeBits(code.length(), Integer.parseInt(code,2));
