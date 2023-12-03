@@ -62,9 +62,6 @@ public class HuffProcessor {
 	 * @param out
 	 *            Buffered bit stream writing to the output file.
 	 */
-
-	String[] encodings = new String[ALPH_SIZE+1];
-
 	public void compress(BitInputStream in, BitOutputStream out){
 
 		int[] counts = getCounts(in);
@@ -72,11 +69,8 @@ public class HuffProcessor {
 	  	in.reset();
 	  	out.writeBits(BITS_PER_INT ,HUFF_TREE);
 	  	writeTree(root,out);
-	  	for(int i = 0; i < ALPH_SIZE + 1; i++)
-		{
-			encodings[i] = null;
-		}
-	  	makeEncodings(root, "");
+	  	String[] encodings = new String[ALPH_SIZE+1];
+	  	makeEncodings(root, "", encodings);
 		while(true)
 		{
 			int bits = in.readBits(BITS_PER_WORD);
@@ -139,14 +133,14 @@ public class HuffProcessor {
 		writeTree(root.right, out);
 	}
 
-	private void makeEncodings(HuffNode root, String path){
+	private void makeEncodings(HuffNode root, String path,String[] encodings){
 		if (checkLeaf(root)) {
 			encodings[root.value] = path;
 			return;
 		   }
 		else{
-			makeEncodings(root.left, path + "0");
-			makeEncodings(root.right, path + "1");
+			makeEncodings(root.left, path + "0", encodings);
+			makeEncodings(root.right, path + "1", encodings);
 		}
 	}
 	/**
