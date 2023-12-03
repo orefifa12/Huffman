@@ -66,11 +66,11 @@ public class HuffProcessor {
 
 		int[] counts = getCounts(in);
 	  	HuffNode root = makeTree(counts) ;
-	  	in.reset ();
-	  	out.writeBits (BITS_PER_INT ,HUFF_TREE);
+	  	in.reset();
+	  	out.writeBits(BITS_PER_INT ,HUFF_TREE);
 	  	writeTree(root,out);
 	  	String[] encodings = new String[ALPH_SIZE+1];
-	  	makeEncodings(root, ""‚ encodings);
+	  	makeEncodings(root, "", encodings);
 
 		out.close();
 	}
