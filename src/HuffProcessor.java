@@ -71,19 +71,25 @@ public class HuffProcessor {
 	  	writeTree(root,out);//make the new tree
 	  	String[] encodings = new String[ALPH_SIZE+1]; // Encodings for each car
 	  	makeEncodings(root, "", encodings); // make the encoding for each 8bit char
-		  while(true){
+		  while (true) {
 			int bits = in.readBits(BITS_PER_WORD);
-			if(bits == -1)
+			if (bits == -1)
 				break;
 			String code = encodings[bits];
-			if (code.length() > 0) {
+			if (code != null && code.length() > 0) {
 				out.writeBits(code.length(), Integer.parseInt(code, 2));
+			} else {
+				throw new IllegalStateException("Invalid Huffman encoding: bits=" + bits);
 			}
 		}
+		
 		String eofCode = encodings[PSEUDO_EOF];
-		if (eofCode.length() > 0) {
+		if (eofCode != null && eofCode.length() > 0) {
 			out.writeBits(eofCode.length(), Integer.parseInt(eofCode, 2));
+		} else {
+			throw new IllegalStateException("Invalid Huffman encoding for PSEUDO_EOF");
 		}
+		
 		out.close();
 		
 	}
