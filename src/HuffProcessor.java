@@ -109,6 +109,21 @@ public class HuffProcessor {
 		return root;
 	}
 
+	private void writeTree(HuffNode root, BitOutputStream out)
+	{
+		if(root == null)
+			return;
+		if(checkLeaf(root))
+		{
+			out.writeBits(1, 1);
+			out.writeBits(BITS_PER_WORD + 1, root.value);
+			return;
+		}
+		out.writeBits(1, 0);
+		writeTree(root.left, out);
+		writeTree(root.right, out);
+	}
+
 	/**
 	 * Decompresses a file. Output file must be identical bit-by-bit to the
 	 * original.
