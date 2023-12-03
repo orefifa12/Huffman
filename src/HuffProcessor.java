@@ -44,10 +44,10 @@ public class HuffProcessor {
 	public static final int HUFF_NUMBER = 0xface8200;
 	public static final int HUFF_TREE  = HUFF_NUMBER | 1;
 
-	private boolean myDebugging = false;
+	private boolean myDebugging = true;
 	
 	public HuffProcessor() {
-		this(false);
+		this(true);
 	}
 	
 	public HuffProcessor(boolean debug) {
@@ -66,32 +66,22 @@ public class HuffProcessor {
 
 		int[] counts = getCounts(in); // freq of every 8-bit
 	  	HuffNode root = makeTree(counts) ; //creates new encodings greedily
-	  	in.reset(); //reset to the beginning of the file
+	  	in.reset(); //reset
 	  	out.writeBits(BITS_PER_INT ,HUFF_TREE);//write magic num
 	  	writeTree(root,out);//make the new tree
 	  	String[] encodings = new String[ALPH_SIZE+1]; // Encodings for each car
 	  	makeEncodings(root, "", encodings); // make the encoding for each 8bit char
-		  while (true) {
-			int bits = in.readBits(BITS_PER_WORD);
-			if (bits == -1)
+		in.reset(); //reset
+		while(true){
+			int bits = in.readBits(BITS_PER_WORD);//reads the bit for the next word
+			if(bits == -1) // There are no more bits to read
 				break;
 			String code = encodings[bits];
-			if (code != null && code.length() > 0) {
-				out.writeBits(code.length(), Integer.parseInt(code, 2));
-			} else {
-				throw new IllegalStateException("Invalid Huffman encoding: bits=" + bits);
-			}
+    		out.writeBits(code.length(), Integer.parseInt(code,2));
 		}
-		
-		String eofCode = encodings[PSEUDO_EOF];
-		if (eofCode != null && eofCode.length() > 0) {
-			out.writeBits(eofCode.length(), Integer.parseInt(eofCode, 2));
-		} else {
-			throw new IllegalStateException("Invalid Huffman encoding for PSEUDO_EOF");
-		}
-		
+		String code = encodings[PSEUDO_EOF];
+		out.writeBits(code.length(), Integer.parseInt(code,2));	
 		out.close();
-		
 	}
 
 	private int[] getCounts(BitInputStream in)
