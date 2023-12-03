@@ -94,13 +94,44 @@ public class HuffProcessor {
 		HuffNode current = root;
 		while(true)
 		{
-
+			int bits = input.readBits(1);
+			if(bits == -1)
+			{
+				throw new HuffException("bad input, no PSEUDO_EOF");
+			}
+			else
+			{
+				if(bits == 0)
+					current = current.left;
+				else
+					current = current.right;
+				
+				if(checkLeaf(current))
+				{
+					if(current.value == PSEUDO_EOF)
+						break;
+					else
+					{
+						out.writeBits(BITS_PER_WORD, current.value);
+						current = root;
+					}
+				}
+			}
 		}
 		out.close();
 	}
 
+	private boolean checkLeaf(HuffNode t)
+	{
+		if(t == null)
+			return false;
+		if(t.left == null && t.right == null)
+			return true;
+		return false;
+	}
+
 	private HuffNode readTree(BitInputStream in)
 	{
-		
+
 	}
 }
