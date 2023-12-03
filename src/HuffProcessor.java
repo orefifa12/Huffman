@@ -90,8 +90,10 @@ public class HuffProcessor {
 
 	private HuffNode makeTree(int[] counts){
 		PriorityQueue<HuffNode> pq = new PriorityQueue<>();
-		for(int i = 0; i < counts.size(); i++) {
-			pq.add(new HuffNode(index,freq[index],null,null));
+		for(int i = 0; i < counts.length; i++) {
+			if (counts[i] > 0){
+				pq.add(new HuffNode(i,counts[i],null,null));
+			}
 		}
 		pq.add(new HuffNode(PSEUDO_EOF,1,null,null)); // account for PSEUDO_EOF having a single occurrence
 
@@ -105,7 +107,7 @@ public class HuffProcessor {
 		HuffNode root = pq.remove();
 		return root;
 	}
-	
+
 	/**
 	 * Decompresses a file. Output file must be identical bit-by-bit to the
 	 * original.
