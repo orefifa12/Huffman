@@ -78,8 +78,8 @@ public class HuffProcessor {
 			String code = encodings[bits];
     		out.writeBits(code.length(), Integer.parseInt(code,2));
 		}
-		String code = encodings[PSEUDO_EOF];
-		out.writeBits(code.length(), Integer.parseInt(code,2));	
+		String eofcode = encodings[PSEUDO_EOF];
+		out.writeBits(eofcode.length(), Integer.parseInt(eofcode,2));	
 		out.close();
 	}
 
