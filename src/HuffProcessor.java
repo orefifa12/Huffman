@@ -110,7 +110,7 @@ public class HuffProcessor {
 		while (pq.size() > 1) {
 		HuffNode left = pq.remove();
 		HuffNode right = pq.remove();
-		HuffNode t = new HuffNode(0, pq.size(), left, right);
+		HuffNode t = new HuffNode(0, left.weight+right.weight, left, right);
 		// create new HuffNode t with weight from
 		// left.weight+right.weight and left, right subtrees
 		pq.add(t);
@@ -128,9 +128,12 @@ public class HuffProcessor {
 			out.writeBits(BITS_PER_WORD + 1, root.value);
 			return;
 		}
-		out.writeBits(1, 0);
-		writeTree(root.left, out);
-		writeTree(root.right, out);
+		else{
+			out.writeBits(1, 0);
+			writeTree(root.left, out);
+			writeTree(root.right, out);
+		}
+		
 	}
 
 	private void makeEncodings(HuffNode root, String path,String[] encodings){
