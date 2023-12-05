@@ -71,21 +71,22 @@ public class HuffProcessor {
 	  	writeTree(root,out);
 	  	String[] encodings = new String[ALPH_SIZE+1];
 	  	makeEncodings(root, "", encodings);
-		while(true)
-		{
+		while (true) {
 			int bits = in.readBits(BITS_PER_WORD);
-			if(bits == -1)
+			if (bits == -1) {
 				break;
-			String code = encodings[bits];
-    		out.writeBits(code.length(), Integer.parseInt(code,2));
+			}
+			String code = encodings[(char) bits];
+			System.out.println("bits: " + bits + ", code: " + code + ", code length: " + code.length());
+			out.writeBits(code.length(), Integer.parseInt(code, 2));
 		}
+		
 		String code = encodings[PSEUDO_EOF];
 		out.writeBits(code.length(), Integer.parseInt(code,2));	
 		out.close();
 	}
 
-	private int[] getCounts(BitInputStream in)
-	{
+	private int[] getCounts(BitInputStream in){
 		int[] count = new int[ALPH_SIZE];
 		while(true)
 		{
@@ -118,8 +119,7 @@ public class HuffProcessor {
 		return root;
 	}
 
-	private void writeTree(HuffNode root, BitOutputStream out)
-	{
+	private void writeTree(HuffNode root, BitOutputStream out){
 		if(root == null)
 			return;
 		if(checkLeaf(root))
