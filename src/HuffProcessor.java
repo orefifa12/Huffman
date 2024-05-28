@@ -44,10 +44,10 @@ public class HuffProcessor {
 	public static final int HUFF_NUMBER = 0xface8200;
 	public static final int HUFF_TREE  = HUFF_NUMBER | 1;
 
-	private boolean myDebugging = true;
+	private boolean myDebugging = false;
 	
 	public HuffProcessor() {
-		this(true);
+		this(false);
 	}
 	
 	public HuffProcessor(boolean debug) {
