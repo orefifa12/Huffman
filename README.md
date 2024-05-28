@@ -173,3 +173,4 @@ Push your code to Git. Do this often. To submit:
 
 Points are awarded equally for compression and decompression. You'll get points for decompressing and compressing text and image files. These are 10 points each, for a total of 40 points possible on the code. The analysis is scored separately by TAs for a total of 12 points (4 per question).
 
+# Huffman
